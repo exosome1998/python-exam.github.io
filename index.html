@@ -8,57 +8,133 @@
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; }
         .card { background: white; max-width: 700px; margin: auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        /* Make the REPL boxes look clean */
-        py-repl { margin-top: 15px; border-radius: 8px; display: block; }
+        
+        /* Custom Editor Styling */
+        .code-editor { width: 100%; height: 150px; font-family: 'Courier New', monospace; font-size: 14px; padding: 10px; background: #1e1e1e; color: #d4d4d4; border-radius: 6px; border: none; outline: none; resize: vertical; margin-bottom: 10px; box-sizing: border-box;}
+        .output-console { width: 100%; background: #f4f4f4; padding: 10px; border-radius: 6px; font-family: monospace; color: #333; min-height: 20px; box-sizing: border-box; border: 1px solid #ddd; white-space: pre-wrap;}
+        
+        /* Buttons */
+        .run-btn { background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-bottom: 10px;}
+        .run-btn:hover { background: #218838; }
+        .submit-btn { background: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold;}
+        .submit-btn:hover { background: #0056b3; }
+        
+        /* Hide PyScript's loading banner to keep it clean */
+        .py-overlay { display: none !important; }
     </style>
 </head>
 <body>
 
+    <script type="py">
+        import sys
+        import io
+        from pyscript import document
+
+        def execute_user_code(code_id, out_id):
+            # 1. Get code from the textarea
+            code = document.getElementById(code_id).value
+            out = document.getElementById(out_id)
+            
+            # 2. Redirect standard output so we can capture 'print()' statements
+            old_stdout = sys.stdout
+            sys.stdout = io.StringIO()
+            
+            try:
+                # 3. Execute the code safely
+                exec(code, {})
+                result = sys.stdout.getvalue()
+                out.innerText = result if result else "Code executed. (No output generated)"
+            except Exception as e:
+                # 4. Catch and display syntax/runtime errors
+                out.innerText = f"Error: {e}"
+            finally:
+                # 5. Reset output
+                sys.stdout = old_stdout
+
+        # Handlers for the buttons
+        def run_q1(event): execute_user_code('q1-code', 'q1-out')
+        def run_q2(event): execute_user_code('q2-code', 'q2-out')
+        def run_q3(event): execute_user_code('q3-code', 'q3-out')
+    </script>
+
+
     <div class="card">
         <h1>🐍 Python Midterm</h1>
-        <p><em>Note: It takes a few seconds for the Python engine to load. Once loaded, type your answers and hit the play button (or Shift + Enter) in the corner of each box.</em></p>
+        <p>Complete the tasks below. Type your answers into the dark boxes and click <strong>Run</strong> to test your code before submitting.</p>
     </div>
 
     <div class="card">
         <h3>Question 1: Calculate Area</h3>
         <p>Write a function <code>get_area(radius)</code> that returns the area of a circle.</p>
         
-        <py-repl id="q1-code">
+        <textarea id="q1-code" class="code-editor" spellcheck="false">
 import math
 
 def get_area(radius):
     # Your code here
     return 0
 
-print(f"Test with radius 5: {get_area(5)}")
-        </py-repl>
+print(f"Test with radius 5: {get_area(5)}")</textarea>
+        
+        <button py-click="run_q1" class="run-btn">▶ Run Question 1</button>
+        <pre id="q1-out" class="output-console">Output will appear here...</pre>
     </div>
 
     <div class="card">
         <h3>Question 2: Even or Odd</h3>
-        <p>Write a function <code>is_even(num)</code> that returns <code>True</code> if the number is even, and <code>False</code> otherwise.</p>
+        <p>Write a function <code>is_even(num)</code> that returns <code>True</code> if the number is even.</p>
         
-        <py-repl id="q2-code">
+        <textarea id="q2-code" class="code-editor" spellcheck="false">
 def is_even(num):
     # Your code here
     pass
 
-print(f"Test with 4: {is_even(4)}")
-        </py-repl>
+print(f"Test with 4: {is_even(4)}")</textarea>
+        
+        <button py-click="run_q2" class="run-btn">▶ Run Question 2</button>
+        <pre id="q2-out" class="output-console">Output will appear here...</pre>
     </div>
 
     <div class="card">
-        <h3>Question 3: Reverse a String</h3>
-        <p>Write a function <code>reverse_string(text)</code> that returns the string backwards.</p>
-        
-        <py-repl id="q3-code">
-def reverse_string(text):
-    # Your code here
-    return ""
-
-print(f"Test with 'python': {reverse_string('python')}")
-        </py-repl>
+        <button class="submit-btn" onclick="submitExam()">Submit My Exam</button>
     </div>
 
+    <script>
+        // BONUS: This script allows students to use the "Tab" key inside the textareas 
+        // without jumping to the next page element, making it feel like a real editor.
+        document.querySelectorAll('textarea').forEach(el => {
+            el.addEventListener('keydown', function(e) {
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    let start = this.selectionStart;
+                    let end = this.selectionEnd;
+                    this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+                    this.selectionStart = this.selectionEnd = start + 4;
+                }
+            });
+        });
+
+        async function submitExam() {
+            // Because we are using textareas, grabbing the code is now 100% reliable!
+            const results = {
+                student_name: "Student", 
+                q1_answer: document.getElementById('q1-code').value,
+                q2_answer: document.getElementById('q2-code').value,
+                submitted_at: new Date().toISOString()
+            };
+
+            console.log("Submitting:", results);
+            alert("Exam Submitted! Check your browser console to see the captured code.");
+
+            /* Uncomment this when ready to send to your database/webhook
+            const response = await fetch("YOUR_WEBHOOK_URL", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(results)
+            });
+            if (response.ok) alert("Exam Submitted Successfully!");
+            */
+        }
+    </script>
 </body>
 </html>
