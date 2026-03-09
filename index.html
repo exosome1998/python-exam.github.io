@@ -8,22 +8,22 @@
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; }
         .card { background: white; max-width: 700px; margin: auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        /* Add a visible border to the editor so it stands out */
-        script[type="py"][editor] { display: block; margin-top: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        /* Make the REPL boxes look clean */
+        py-repl { margin-top: 15px; border-radius: 8px; display: block; }
     </style>
 </head>
 <body>
 
     <div class="card">
         <h1>🐍 Python Midterm</h1>
-        <p><em>Note: It may take 3-5 seconds for the Python engine to load. Once loaded, you can type your answers and hit the play button in the corner of each box.</em></p>
+        <p><em>Note: It takes a few seconds for the Python engine to load. Once loaded, type your answers and hit the play button (or Shift + Enter) in the corner of each box.</em></p>
     </div>
 
     <div class="card">
         <h3>Question 1: Calculate Area</h3>
         <p>Write a function <code>get_area(radius)</code> that returns the area of a circle.</p>
         
-        <script type="py" editor id="q1-code">
+        <py-repl id="q1-code">
 import math
 
 def get_area(radius):
@@ -31,20 +31,33 @@ def get_area(radius):
     return 0
 
 print(f"Test with radius 5: {get_area(5)}")
-        </script>
+        </py-repl>
     </div>
 
     <div class="card">
         <h3>Question 2: Even or Odd</h3>
         <p>Write a function <code>is_even(num)</code> that returns <code>True</code> if the number is even, and <code>False</code> otherwise.</p>
         
-        <script type="py" editor id="q2-code">
+        <py-repl id="q2-code">
 def is_even(num):
     # Your code here
     pass
 
 print(f"Test with 4: {is_even(4)}")
-        </script>
+        </py-repl>
+    </div>
+
+    <div class="card">
+        <h3>Question 3: Reverse a String</h3>
+        <p>Write a function <code>reverse_string(text)</code> that returns the string backwards.</p>
+        
+        <py-repl id="q3-code">
+def reverse_string(text):
+    # Your code here
+    return ""
+
+print(f"Test with 'python': {reverse_string('python')}")
+        </py-repl>
     </div>
 
 </body>
