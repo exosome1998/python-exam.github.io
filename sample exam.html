@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Python Live Exam</title>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; }
+        .card { background: white; max-width: 700px; margin: auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .submit-btn { background: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; transition: background 0.3s;}
+        .submit-btn:hover { background: #0056b3; }
+        /* Fix PyScript editor overflowing its container */
+        .py-editor { margin-top: 15px; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>🐍 Python Midterm</h1>
+        <p>Complete the tasks below. You can run your code using the play button in the corner of each box before submitting.</p>
+    </div>
+
+    <div class="card">
+        <h3>Question 1: Calculate Area</h3>
+        <p>Write a function <code>get_area(radius)</code> that returns the area of a circle.</p>
+        
+        <script type="py" editor id="q1-code">
+import math
+
+def get_area(radius):
+    # Your code here
+    return 0
+
+print(f"Test with radius 5: {get_area(5)}")
+        </script>
+    </div>
+
+    <div class="card">
+        <h3>Question 2: Even or Odd</h3>
+        <p>Write a function <code>is_even(num)</code> that returns <code>True</code> if the number is even, and <code>False</code> otherwise.</p>
+        
+        <script type="py" editor id="q2-code">
+def is_even(num):
+    # Your code here
+    pass
+
+print(f"Test with 4: {is_even(4)}")
+print(f"Test with 7: {is_even(7)}")
+        </script>
+    </div>
+
+    <div class="card">
+        <h3>Question 3: Reverse a String</h3>
+        <p>Write a function <code>reverse_string(text)</code> that returns the string backwards.</p>
+        
+        <script type="py" editor id="q3-code">
+def reverse_string(text):
+    # Your code here
+    return ""
+
+print(f"Test with 'python': {reverse_string('python')}")
+        </script>
+    </div>
+
+    <div class="card">
+        <button class="submit-btn" onclick="submitExam()">Submit My Exam</button>
+    </div>
+
+    <script>
+        async function submitExam() {
+            // Note: In standard HTML/JS, getting text from the DOM elements directly 
+            // will only grab the *initial* template code, not the user's edits.
+            const q1 = document.getElementById('q1-code').textContent;
+            const q2 = document.getElementById('q2-code').textContent;
+            const q3 = document.getElementById('q3-code').textContent;
+            
+            // To prove the button works, we'll log it and alert
+            console.log("Q1:", q1);
+            alert("Exam Submission Triggered! Check browser console.");
+
+            /* Uncomment this block when you are ready to link your SheetMonkey API
+            const response = await fetch("https://api.sheetmonkey.io/form/YOUR_ID_HERE", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    student_name: "John Doe",
+                    answer_1: q1,
+                    answer_2: q2,
+                    answer_3: q3,
+                    submitted_at: new Date().toISOString()
+                })
+            });
+
+            if (response.ok) alert("Exam Submitted Successfully!");
+            */
+        }
+    </script>
+</body>
+</html>
